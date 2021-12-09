@@ -6,8 +6,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from tkinter.tix import COLUMN
-
 
 URL_SCHOOL_LIST = "https://eduface.ru/sites/list/region/1"
 XPATH_SCHOOL_LINK = "//h3[starts-with(text(),'Школы (')]/..//div[@class='accordion-style4-wraplink']//a[contains(@href,'edusev.ru')]"
@@ -26,7 +24,8 @@ class Crawler:
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         #df = pd.DataFrame(columns=["school_id", "school", "class", "actual", "expected"])
         df = pd.DataFrame()
-        schools = self.loadSchools(self)#[:1]
+        #schools = self.loadSchools(self)[:3]
+        schools = self.loadSchools(self)
         for school in schools:
             self.logger.info("Processing %s" % (school["title"]))
             classes = self.loadClasses(self, school["url"])
