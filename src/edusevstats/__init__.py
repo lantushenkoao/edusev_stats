@@ -7,7 +7,7 @@ import logging
 import logging.config
 import os.path
 
-ARTICLE_PATH = "article.html"
+ARTICLE_PATH = "article_d3.html"
 SUBST_START = "//jsonDataSubstitutionStart"
 SUBST_END = "//jsonDataSubstitutionEnd"
 
