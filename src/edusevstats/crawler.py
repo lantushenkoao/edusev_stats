@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 URL_SCHOOL_LIST = "https://eduface.ru/sites/list/region/1"
-XPATH_SCHOOL_LINK = "//h3[starts-with(text(),'Школы (')]/..//div[@class='accordion-style4-wraplink']//a[contains(@href,'edusev.ru')]"
+XPATH_SCHOOL_LINK = "//h3[starts-with(text(),'Школы ')]/..//div[@class='accordion-style4-wraplink']//a[contains(@href,'edusev.ru')]"
 XPATH_SCHOOL_TITLE = "span"
 URL_CLASSES_LIST = "{url}vacant"
 XPATH_CLASSES_LIST = "//h2[text()='Классы']/..//a[starts-with(text(), 'Класс ')]"

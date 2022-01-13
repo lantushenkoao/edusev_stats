@@ -42,6 +42,6 @@ article_end = article[article.index(SUBST_END):]
 # Write the file out again
 with open(ARTICLE_PATH, 'w') as file:
     file.truncate(0)
-    file.write(article_start + "\n jsonData = " + json + "\n" + article_end)
+    file.write(article_start + "\n jsonDataRaw = " + json + "\n" + article_end)
     
 logger.info("JSON data written to HTML article " + ARTICLE_PATH)
