@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!--
+Исходные коды достуны на https://github.com/lantushenkoao/edusev_stats 
+-->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -8,33 +11,37 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
         <style>
             .article {
-                padding: 15px 10px 10px 30px;
+                padding: 15px 0px 10px 0px;
+                font-size: 12px;
+            }
+            .chart-param-selector{
+                width: 300px;
             }
             .article-title{
                 text-align: center;
                 padding: 20px;
-                font-size: 20px;
+                font-size: 14px;
                 font-family: Tahoma;
             }
             .article-text{
-                padding: 20px;
-                width: 80%;
-                margin: 0px auto;
+                padding: 30px 0px;
+                width: 90%;
+                margin: 0px 0px 0px 150px;
             }
             .container-controls {
                 display:flex;
                 flex-wrap: nowrap;
                 justify-content: flex-start;
-                padding-left: 100px;
+                padding-left: 150px;
             }
             .infobox {
-                width: 450px;
+                width: 400px;
                 background-color: #eae9e9;
                 border: 1px solid #808080;
                 font-family: Verdana;
                 font-size: 10px;
                 padding: 10px;
-                margin-left: 200px;
+                margin-left: 30px;
             }
             .infobox-expected {
                 color: #247ae6
@@ -125,6 +132,9 @@
                             'expected': aggregateFnc(data, function(d) { return parseInt(d.expected); })
                         }
                     })
+                    .sortBy(function(row){
+                        return (row.expected - row.actual)/row.actual;
+                        })
                     .value();
             }
             
@@ -142,6 +152,8 @@
                     .replace('Государственное бюджетное общеобразовательное учреждение города Севастополя', '')
                     .replace('Государственное бюджетное образовательное учреждение города Севастополя', '')
                     .replace('Средняя общеобразовательная школа', 'СОШ')
+					.replace('Частное общеобразовательное учреждение', 'ЧОУ')
+					.replace('Частное учреждение общеобразовательная организация', 'ЧОУ')
                     .replace('Государственное бюджетное общеобразовательное учреждение', 'ГБОУ')
                     .replace('имени', 'им.')
                     .replace('Героя Советского Союза','')
@@ -163,13 +175,8 @@
                 // append the svg object to the body of the page
                 var svg = d3.select(".js-container-chart")
                   .append("svg")
-                    .attr("width", 1800 + margin.left + margin.right)
+                    .attr("width", 1200 + margin.left + margin.right)
                     .attr("height", 800 + margin.top + margin.bottom)
-                   // Responsive SVG needs these 2 attributes and no width and height attr.
-//                    .attr("preserveAspectRatio", "xMinYMin meet")
-//                    .attr("viewBox", "0 0 1800 800")
-                   // Class to make it responsive.
-//                    .classed("svg-content-responsive", true)
             
                   .append("g")
                     .attr("transform",
@@ -206,7 +213,6 @@
                     .call(d3.axisLeft(y));
             
                 // Highlight a specific subgroup when hovered
-            
                 // What happens when user hover a bar
                 var mouseover = function(d) {
                     d3.selectAll(".js-bar-group").style("opacity", 0.5);
@@ -221,7 +227,7 @@
                     formatInfobox(infoboxData);
                 }
                 
-                  // When user do not hover anymore
+                // When user do not hover a bar anymore
                 var mouseleave = function(d) {
                     // Back to normal opacity: 0.8
                     d3.selectAll(".js-bar-group").style("opacity",1)
@@ -275,14 +281,15 @@
             </div>
             <div class="article-text">
             Данная статистика собрана на основе открытых данных предоставляемых департаментом образования г. Севастополя. Большинство школ имеют сайты 
-            (например <a href="https://ingineering-sch.edusev.ru/">https://ingineering-sch.edusev.ru/</a>) на котором предоставлена информация о заполняемости классов. Данная статья использует данные с этих сайтов  
+            (например <a href="https://ingineering-sch.edusev.ru/vacant">https://ingineering-sch.edusev.ru/vacant</a>) на котором предоставлена информация о заполняемости классов, а именно нормативная наполняемость класса и количество фактически обучающихся. 
+            Все школы города перечислены на сайте <a href="https://eduface.ru/sites/list/region/1">сайте образовательных организаций Севастополя</a>. Статистика включает в себя только те школы, которые есть на этом сайте.   
             </div>
 
         </div>
         <div class="container-controls">
             <div class="controls">
                 <div>
-                    <select class="js-select-classes">
+                    <select class="js-select-classes chart-param-selector">
                         <option value="all">Все классы</option>
                         <option value="1-2-3-4-">Только 1-4 классы (включительно)</option>
                         <option value="5-6-7-8-">Только 5-8 классы (включительно)</option>
@@ -290,7 +297,7 @@
                     </select>
                 </div>
                 <div>
-                    <select class="js-select-aggregation-type">
+                    <select class="js-select-aggregation-type chart-param-selector">
                         <option value="avg">Отображать среднее количество учеников</option>
                         <option value="sum">Отображать сумму учеников</option>
                     </select>
