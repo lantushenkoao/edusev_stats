@@ -26,13 +26,13 @@
             .article-text{
                 padding: 30px 0px;
                 width: 90%;
-                margin: 0px 0px 0px 150px;
+                margin: 0px 0px 0px 30px;
             }
             .container-controls {
                 display:flex;
                 flex-wrap: nowrap;
                 justify-content: flex-start;
-                padding-left: 150px;
+                padding-left: 30px;
             }
             .infobox {
                 width: 400px;
@@ -115,7 +115,7 @@
             function getAggregateFncTitle(){
                 switch($('.js-select-aggregation-type').val()){
                     case 'avg': 
-                        return 'среднее';
+                        return 'среднее в классе';
                 }
                 
                 return 'сумма';    
@@ -140,8 +140,8 @@
             
             function formatInfobox(infoboxData){
                 var template = '<p>Школа: <span><%= school %></span></p> ' +
-                    '<p class="infobox-expected">Планируемое количество учеников в классе (<%= aggregateTitle%>): <span><%= expected %></span></p> ' +
-                    '<p class="infobox-actual">Фактическое количество учеников в классе (<%= aggregateTitle%>): <span><%= actual %></span></p>' +
+                    '<p class="infobox-expected">Планируемое количество учеников (<%= aggregateTitle%>): <span><%= expected %></span></p> ' +
+                    '<p class="infobox-actual">Фактическое количество учеников (<%= aggregateTitle%>): <span><%= actual %></span></p>' +
                     '<p>Всего школ: <span><%= count %></span></p> ';
                 var templateCompiled = _.template(template)(infoboxData);
                 $('.js-infobox').html(templateCompiled);
@@ -156,17 +156,21 @@
 					.replace('Частное учреждение общеобразовательная организация', 'ЧОУ')
                     .replace('Государственное бюджетное общеобразовательное учреждение', 'ГБОУ')
                     .replace('имени', 'им.')
+                    .replace('Полного Кавалера ордена Славы', '')
+                    .replace('трижды', '')
+                    .replace('углубленным изучением', 'уг. из.')
                     .replace('Героя Советского Союза','')
                     .replace('с углубленным изучением английского языка', 'англ')
-                    .replace('Государственное бюджетное образовательное учреждение', 'ГБОУ');
+                    .replace('Государственное бюджетное образовательное учреждение', 'ГБОУ')
+                    .replace('города', 'г.');
                     
-                var nameLenght = 60;
+                var nameLenght = 55;
                 return result.length > nameLenght? result.substring(0, nameLenght) + '...' : result; 
             }
             
             //https://www.d3-graph-gallery.com/graph/barplot_stacked_highlight.html
             function drawChart(data, yMax){
-                var margin = {top: 10, right: 30, bottom: 300, left: 150},
+                var margin = {top: 10, right: 30, bottom: 300, left: 30},
                     width = window.innerWidth * 0.9 - margin.left - margin.right,
                     height = 600 - margin.top - margin.bottom;
                 
@@ -175,7 +179,7 @@
                 // append the svg object to the body of the page
                 var svg = d3.select(".js-container-chart")
                   .append("svg")
-                    .attr("width", 1200 + margin.left + margin.right)
+                    .attr("width", 1300 + margin.left + margin.right)
                     .attr("height", 800 + margin.top + margin.bottom)
             
                   .append("g")
@@ -199,10 +203,10 @@
                         .call(xAxis)
                         .selectAll("text")
                         .style("text-anchor", "end")
-                        .attr("dx", "-.8em")
-                        .attr("dy", ".15em")
+                        .attr("dx", "-1em")
+                        .attr("dy", "-.25em")
                         .attr("transform", function (d) {
-                        return "rotate(-60)"; //x label rotate
+                        return "rotate(-80)"; //x label rotate
                     });
                     // Add Y axis
                 var y = d3.scaleLinear()
